@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://b-shop-1.onrender.com/api',
+  baseURL: 'https://b-shop-1.onrender.com',
 });
 
 // Attach token if available
