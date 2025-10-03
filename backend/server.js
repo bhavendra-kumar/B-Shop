@@ -1,6 +1,5 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
 
@@ -8,16 +7,28 @@ const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const razorpayRoute = require('./routes/razorpay');
-
-dotenv.config();
-connectDB();
+const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
+
+// Body parser
 app.use(express.json());
 
-// Enable CORS for frontend
+// CORS configuration
+const allowedOrigins = [
+  'https://b-shopy.netlify.app', // production frontend
+  'http://localhost:5173'        // local frontend (adjust port if needed)
+];
+
 app.use(cors({
-  origin: 'https://b-shopy.netlify.app/',
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman or curl
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 
@@ -27,9 +38,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/razorpay', razorpayRoute);
 
-
-// Error handling middleware (optional)
-const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
