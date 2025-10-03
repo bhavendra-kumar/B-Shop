@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Enable CORS for frontend
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://b-shopy.netlify.app/',
   credentials: true
 }));
 
