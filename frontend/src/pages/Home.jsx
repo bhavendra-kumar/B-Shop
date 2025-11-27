@@ -8,6 +8,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategoryMobile, setSelectedCategoryMobile] = useState('Mobiles');
   const [toast, setToast] = useState({ show: false, message: '' });
   const navigate = useNavigate();
 
@@ -49,12 +50,16 @@ const Home = () => {
 
   const filteredProducts = products.filter((p) => {
     const productCategory = p.category ? p.category.toLowerCase() : '';
+
     const matchesSearch =
       p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       productCategory.includes(searchTerm.toLowerCase());
+
     const matchesCategory =
       selectedCategory.toLowerCase() === 'all' ||
+      selectedCategoryMobile.toLowerCase() === 'mobiles' ||
       productCategory === selectedCategory.toLowerCase();
+
     return matchesSearch && matchesCategory;
   });
 

@@ -12,9 +12,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await API.post("/users/login", { email, password });
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      console.log(data)
+     // localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/home"); // ✅ Redirect to /home after login
     } catch (err) {
+      console.log(err)
       setError(err.response?.data?.message || "Login failed");
     }
   };
